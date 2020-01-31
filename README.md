@@ -3,11 +3,7 @@ Coral implements an efficient algorithm to bridge paire-end RNA-seq reads, i.e.,
 to determine the alignment of entire fragments given the alignment of two mate ends.
 
 # Release
-Latest release of Coral is [v1.0.0](https://github.com/Kingsford-Group/coral/releases/tag/v0.10.4),
-including binary 
-(for both [linux](https://github.com/Kingsford-Group/coral/releases/download/v0.10.4/coral-0.10.4_linux_x86_64.tar.gz)
-and [mac](https://github.com/Kingsford-Group/coral/releases/download/v0.10.4/coral-0.10.4_macOS_10.14.tar.gz))
-and [source code](https://github.com/Kingsford-Group/coral/releases/download/v0.10.4/coral-0.10.4.tar.gz).
+Latest release of Coral is [v1.0.0](https://github.com/Shao-Group/coral/releases/tag/v1.0.0).
 
 # Installation
 Download the source code of Coral from
