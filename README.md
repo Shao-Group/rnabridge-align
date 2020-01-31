@@ -7,7 +7,7 @@ Latest release of Coral is [v1.0.0](https://github.com/Shao-Group/coral/releases
 
 # Installation
 Download the source code of Coral from
-[here](https://github.com/Kingsford-Group/coral/releases/download/v0.10.4/coral-0.10.4.tar.gz).
+[here](https://github.com/Shao-Group/coral/releases/download/v1.0.0/coral-1.0.0.tar.gz).
 Coral uses additional libraries of Boost and htslib. 
 If they have not been installed in your system, you first
 need to download and install them. You might also need to
