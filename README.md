@@ -1,3 +1,5 @@
+[![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/coral/README.html)
+
 # Overview
 Coral implements an efficient algorithm to bridge paire-end RNA-seq reads, i.e.,
 to determine the alignment of entire fragments given the alignment of two mate ends.
