@@ -3,6 +3,9 @@
 # Overview
 Coral implements an efficient algorithm to bridge paire-end RNA-seq reads, i.e.,
 to determine the alignment of entire fragments given the alignment of two mate ends.
+Scripts that run the experiments to evaluate the effectness of Coral
+is available at [coraltest](https://github.com/Shao-Group/coraltest).
+
 
 # Release
 Latest release of Coral is [v1.0.0](https://github.com/Shao-Group/coral/releases/tag/v1.0.0).
