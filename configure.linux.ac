@@ -32,7 +32,7 @@ AC_ARG_ENABLE([static], [AS_HELP_STRING([--enable-static], [enable static linkin
 # If statis is enabled, directly assign .a files to LIBS
 #AS_IF([test "x$enable_static" = xyes], [AC_SUBST([LIBS], ["/usr/lib/gcc/x86_64-linux-gnu/4.8/libgfortran.a $LIBS"])])
 #AS_IF([test "x$enable_static" = xyes], AS_IF([test "x$FORTRAN_HOME" != "x"], [AC_SUBST([LIBS], ["$FORTRAN_HOME/libgfortran.a $LIBS"])]))
-#AS_IF([test "x$enable_static" = xyes], AS_IF([test "x$ZLIB_HOME" != "x"], [AC_SUBST([LIBS], ["$ZLIB_HOME/libz.a $LIBS"])]))
+AS_IF([test "x$enable_static" = xyes], AS_IF([test "x$ZLIB_HOME" != "x"], [AC_SUBST([LIBS], ["$ZLIB_HOME/libz.a $LIBS"])]))
 AS_IF([test "x$enable_static" = xyes], AS_IF([test "x$HTSLIB_HOME" != "x"], [AC_SUBST([LIBS], ["$HTSLIB_HOME/lib/libhts.a $LIBS"])]))
 
 # If static is NOT enabled, assign LDFLAGS and LIBS

@@ -746,8 +746,8 @@ int bundle2::build_bam1_t(bam1_t &b1t, const vector<int> &v, const hit &h, int32
 	if(x1 < x2) add_cigar_match(b1t, x1, x2);
 
 	if(c !='.') bam_aux_append(&(b1t), "XS", 'A', 1, (uint8_t*)(&c));
-	if(h.hi != -1) bam_aux_append(&(b1t), "HI", 'i', 4, (uint8_t*)(&h.hi));
-	if(h.nh != -1) bam_aux_append(&(b1t), "NH", 'i', 4, (uint8_t*)(&h.nh));
+	if(h.hi != -1) bam_aux_append(&(b1t), "HI", 'C', 1, (uint8_t*)(&h.hi));
+	if(h.nh != -1) bam_aux_append(&(b1t), "NH", 'C', 1, (uint8_t*)(&h.nh));
 
 	return skip;
 }
