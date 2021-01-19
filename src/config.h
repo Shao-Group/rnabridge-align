@@ -72,6 +72,7 @@ extern int max_num_path_nodes;
 extern int dp_solution_size;
 extern int dp_stack_size;
 extern bool use_overlap_scoring;
+extern bool use_supporting;
 extern int32_t max_clustering_flank; 
 extern int32_t flank_tiny_length;
 extern double flank_tiny_ratio;

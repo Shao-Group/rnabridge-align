@@ -9,7 +9,7 @@ UTIL_LIB = $(top_builddir)/lib/util
 GRAPH_LIB = $(top_builddir)/lib/graph
 
 #coral_CPPFLAGS = -std=c++11 -I$(GTF_INCLUDE) -I$(GRAPH_INCLUDE) -I$(UTIL_INCLUDE)
-coral_CPPFLAGS = -I$(GTF_INCLUDE) -I$(GRAPH_INCLUDE) -I$(UTIL_INCLUDE)
+coral_CPPFLAGS = -std=c++11 -I$(GTF_INCLUDE) -I$(GRAPH_INCLUDE) -I$(UTIL_INCLUDE)
 coral_LDFLAGS = -pthread -L$(GTF_LIB) -L$(GRAPH_LIB) -L$(UTIL_LIB)
 coral_LDADD = -lgtf -lgraph -lutil
 

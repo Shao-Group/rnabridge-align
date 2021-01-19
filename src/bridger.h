@@ -9,6 +9,7 @@ See LICENSE for licensing.
 
 #include "bundle2.h"
 #include "fcluster.h"
+#include <boost/functional/hash.hpp>
 
 using namespace std;
 
@@ -97,5 +98,11 @@ bool compare_fragment_v3(fragment *f1, fragment *f2);
 bool compare_fragment_v3_flank(fragment *f1, fragment *f2);
 bool compare_fragment_path(fragment *f1, fragment *f2);
 bool check_suffix(const vector<int> &vx, const vector<int> &vy);
+
+struct vector_hash {
+    std::size_t operator()(const vector<int> &c) const {
+        return boost::hash_range(c.begin(), c.end());
+    }
+};
 
 #endif

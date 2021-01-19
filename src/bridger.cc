@@ -6,6 +6,7 @@ See LICENSE for licensing.
 
 #include "bridger.h"
 #include "config.h"
+#include <unordered_map>
 
 int entry::print()
 {
@@ -430,6 +431,24 @@ int bridger::bridge_hard_fragments()
 		build_overlap_index();
 	}
 
+	// use supporting
+	int low_size = 3;
+	int high_size = 50;
+	unordered_map<vector<int>, int, vector_hash> pmap;
+	if(use_supporting)
+	{
+		pnodes.clear();
+		build_path_nodes(low_size, high_size);
+		for(int k = 0; k < pnodes.size(); k++)
+		{
+			const vector<int> &v = pnodes[k].v;
+			if(v.size() < low_size) continue;
+			if(v.size() > high_size) continue;
+			int w = (int)(pnodes[k].score);
+			pmap.insert(make_pair(v, w));
+		}
+	}
+
 	vector<fcluster> open;
 	cluster_open_fragments(open);
 	sort(open.begin(), open.end(), compare_fcluster_v1_v2);
@@ -570,12 +589,10 @@ int bridger::bridge_hard_fragments()
 			double voting_ratio = 100.0 * voted / fc.fset.size();
 			double best_ratio = 100.0 * votes[be] / voted;
 
-			/*
 			printf("total %lu fragments, %d voted, best = %d, voting-ratio = %.2lf, best-ratio = %.2lf ( ", 
 					fc.fset.size(), voted, be, voting_ratio, best_ratio);
 			printv(votes);
 			printf(")\n");
-			*/
 
 			//if(voting_ratio <= 0.49) continue;
 			//if(best_ratio < 0.8 && be != best_path) continue;
