@@ -433,7 +433,7 @@ int bridger::bridge_hard_fragments()
 
 	// use supporting
 	int low_size = 3;
-	int high_size = 50;
+	int high_size = 30;
 	unordered_map<vector<int>, int, vector_hash> pmap;
 	if(use_supporting)
 	{
@@ -530,6 +530,31 @@ int bridger::bridge_hard_fragments()
 				ps.push_back(s);
 			}
 
+			// calculate supporting
+			vector<int> supports(pn.size(), 0);
+
+			if(use_supporting)
+			{
+				for(int e = 0; e < pb.size(); e++)
+				{
+					const vector<int> &p = pn[e];
+					int s = 0;
+					for(int d = low_size; d < p.size() && d < high_size; d++)
+					{
+						for(int i = 0; i < p.size() - d; i++)
+						{
+							int j = i + d;
+							vector<int> v(p.begin() + i, p.begin() + j);
+							auto x = pmap.find(v);
+							if(x == pmap.end()) continue;
+							int w = x->second;
+							supports[e] += w;
+						}
+					}
+				}
+			}
+
+			/* vote every path
 			int best_path = 0;
 			for(int e = 1; e < pb.size(); e++)
 			{
@@ -542,6 +567,7 @@ int bridger::bridge_hard_fragments()
 					best_path = e;
 				}
 			}
+			*/
 
 			vector<int> votes;
 			votes.resize(pb.size(), 0);
@@ -560,6 +586,9 @@ int bridger::bridge_hard_fragments()
 					if(length < length_low) continue;
 					if(length > length_high) continue;
 
+					// TODO, try voting to every possible path
+					votes[e]++;
+
 					if(ps[e] > best_score)
 					{
 						best_score = ps[e];
@@ -572,27 +601,57 @@ int bridger::bridge_hard_fragments()
 						best_index = e;
 					}
 				}
-				if(best_index >= 0) votes[best_index]++;
+				// TODO
+				//if(best_index >= 0) votes[best_index]++;
 			}
 
 			int be = 0;
 			int voted = votes[0];
+			int mul = 1;
 			for(int i = 1; i < votes.size(); i++)
 			{
 				voted += votes[i];
-				if(votes[i] > votes[be]) be = i;
+				if(votes[i] > votes[be]) 
+				{
+					be = i;
+					mul = 1;
+				}
+				else if(votes[i] == votes[be])
+				{
+					mul++;
+				}
 			}
 
 			if(votes[be] <= 0) continue;
 			if(voted <= 0) continue;
 
+			/*
 			double voting_ratio = 100.0 * voted / fc.fset.size();
 			double best_ratio = 100.0 * votes[be] / voted;
 
-			printf("total %lu fragments, %d voted, best = %d, voting-ratio = %.2lf, best-ratio = %.2lf ( ", 
+			printf("total %lu fragments, %d voted, best = %d, voting-ratio = %.2lf, best-ratio = %.2lf, votes = ( ", 
 					fc.fset.size(), voted, be, voting_ratio, best_ratio);
 			printv(votes);
+			printf("), supports = ( ");
+			printv(supports);
 			printf(")\n");
+			for(int e = 0; e < pb.size(); e++)
+			{
+				printf(" path %d, votes = %d, score = %d, supports = %d, stack = (", e, votes[e], ps[e], supports[e]); 
+				printv(table[j][e].stack);
+				printf("), pb = (");
+				printv(pb[e]);
+				printf("), pn = (");
+				printv(pn[e]);
+				printf(")\n");
+			}
+			*/
+
+			if( !((be == 0) || (mul == 1 && votes[be] == fc.fset.size())) )
+			{
+				//printf("skip bridging\n");
+				continue;
+			}
 
 			//if(voting_ratio <= 0.49) continue;
 			//if(best_ratio < 0.8 && be != best_path) continue;
