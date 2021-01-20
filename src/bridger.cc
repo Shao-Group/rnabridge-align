@@ -554,7 +554,8 @@ int bridger::bridge_hard_fragments()
 				}
 			}
 
-			/* vote every path
+			// assume paths are already sorted
+			/*
 			int best_path = 0;
 			for(int e = 1; e < pb.size(); e++)
 			{
@@ -589,44 +590,30 @@ int bridger::bridge_hard_fragments()
 					// TODO, try voting to every possible path
 					//votes[e]++;
 
-					if(ps[e] > best_score)
-					{
-						best_score = ps[e];
-						best_stack = table[j][e].stack;
-						best_index = e;
-					}
-					else if(ps[e] == best_score && compare_stack(table[j][e].stack, best_stack) >= 1)
-					{
-						best_stack = table[j][e].stack;
-						best_index = e;
-					}
+					path p;
+					p.ex1 = p.ex2 = 0;
+					p.v = pn[e];
+					p.length = length;
+					p.v = encode_vlist(p.v);
+					fr->paths.push_back(p);
+
+					votes[e]++;
+					break;
 				}
-				if(best_index >= 0) votes[best_index]++;
 			}
 
+			/*
 			int be = 0;
 			int voted = votes[0];
-			int mul = 1;
 			for(int i = 1; i < votes.size(); i++)
 			{
 				voted += votes[i];
-				if(votes[i] > votes[be]) 
-				{
-					be = i;
-					mul = 1;
-				}
-				else if(votes[i] == votes[be])
-				{
-					mul++;
-				}
+				if(votes[i] > votes[be]) be = i;
 			}
 
 			if(voted <= 0) continue;
 			if(votes[be] <= 0) continue;
 
-			if(be != 0) continue;
-
-			/*
 			double voting_ratio = 100.0 * voted / fc.fset.size();
 			double best_ratio = 100.0 * votes[be] / voted;
 
@@ -678,6 +665,7 @@ int bridger::bridge_hard_fragments()
 			}
 			*/
 
+			/* TODO
 			for(int i = 0; i < fc.fset.size(); i++)
 			{
 				fragment *fr = fc.fset[i];
@@ -689,6 +677,7 @@ int bridger::bridge_hard_fragments()
 				fr->paths.push_back(p);
 				//printf(" fragment %d length = %d using path %d\n", i, p.length, be);
 			}
+			*/
 		}
 	}
 	return 0;
