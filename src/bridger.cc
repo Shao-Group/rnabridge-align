@@ -587,7 +587,7 @@ int bridger::bridge_hard_fragments()
 					if(length > length_high) continue;
 
 					// TODO, try voting to every possible path
-					votes[e]++;
+					//votes[e]++;
 
 					if(ps[e] > best_score)
 					{
@@ -601,8 +601,7 @@ int bridger::bridge_hard_fragments()
 						best_index = e;
 					}
 				}
-				// TODO
-				//if(best_index >= 0) votes[best_index]++;
+				if(best_index >= 0) votes[best_index]++;
 			}
 
 			int be = 0;
@@ -622,8 +621,10 @@ int bridger::bridge_hard_fragments()
 				}
 			}
 
-			if(votes[be] <= 0) continue;
 			if(voted <= 0) continue;
+			if(votes[be] <= 0) continue;
+
+			if(be != 0) continue;
 
 			/*
 			double voting_ratio = 100.0 * voted / fc.fset.size();
