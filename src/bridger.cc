@@ -10,9 +10,7 @@ See LICENSE for licensing.
 
 int entry::print()
 {
-	printf("entry: length = %d, trace = (%d, %d), stack = (", length, trace1, trace2);
-	printv(stack);
-	printf(")\n");
+	printf("entry: length = %d, trace = (%d, %d)\n", length, trace1, trace2);
 	return 0;
 }
 
@@ -55,27 +53,12 @@ int bridger::bridge()
 	filter_paths();
 	int n3 = get_paired_fragments();
 
-	/*
-	bridge_hard_fragments();
-	filter_paths();
-	int n4 = get_paired_fragments();
-	*/
-
-	int n4 = n3;
-
-	/*
-	bridge_tough_fragments();
-	filter_paths();
-	int n3 = get_paired_fragments();
-	*/
-
 	double r1 = n1 * 100.0 / n;
 	double r2 = n2 * 100.0 / n;
 	double r3 = n3 * 100.0 / n;
-	double r4 = n4 * 100.0 / n;
 
-	printf("#fragments = %d, #fixed = %d -> %d -> %d -> %d, ratio = %.2lf -> %.2lf -> %.2lf -> %.2lf, #remain = %d, length = (%d, %d, %d)\n", 
-			n, n1, n2, n3, n4, r1, r2, r3, r4, n - n4, length_low, length_median, length_high);
+	printf("#fragments = %d, #fixed = %d -> %d -> %d, ratio = %.2lf -> %.2lf -> %.2lf, #remain = %d, length = (%d, %d, %d)\n", 
+			n, n1, n2, n3, r1, r2, r3, n, length_low, length_median, length_high);
 
 	return 0;
 }
@@ -683,138 +666,8 @@ int bridger::bridge_hard_fragments()
 	return 0;
 }
 
-int bridger::bridge_tough_fragments()
+int bridger::compare_stack(const array5 &x, const array5 &y)
 {
-	build_path_nodes();
-	build_overlap_index();
-
-	for(int k = 0; k < pnodes.size(); k++) pnodes[k].print_bridge(k);
-
-	//printf("max_pnode_length = %d, nodes = %lu\n", max_pnode_length, pnodes.size());
-
-	//build_path_clusters();
-
-	vector<fcluster> open;
-	cluster_open_fragments(open);
-	sort(open.begin(), open.end(), compare_fcluster_v1_v2);
-
-	for(int k = 0; k < open.size(); k++)
-	{
-		open[k].print(k);
-	}
-
-	vector<PI> open_indices;
-	vector< set<int> > affected(pnodes.size());
-	for(int k = 0; k < open.size(); k++)
-	{
-		fcluster &fc = open[k];
-		path p1, p2;
-		p1.v = get_suffix(fc.v1);
-		p2.v = get_prefix(fc.v2);
-		vector<path>::const_iterator x1 = lower_bound(pnodes.begin(), pnodes.end(), p1, compare_path_vertices);
-		vector<path>::const_iterator x2 = lower_bound(pnodes.begin(), pnodes.end(), p2, compare_path_vertices);
-		assert(x1 != pnodes.end());
-		assert(x2 != pnodes.end());
-		int k1 = x1 - pnodes.begin();
-		int k2 = x2 - pnodes.begin();
-
-		open_indices.push_back(PI(k1, k2));
-		affected[k1].insert(k);
-	}
-
-	// print regions
-	for(int k = 0; k < bd->regions.size(); k++)
-	{
-		printf("region %d: [%d, %d), length = %d\n", 
-				k, bd->regions[k].lpos, bd->regions[k].rpos, bd->regions[k].rpos - bd->regions[k].lpos);
-	}
-
-	vector<int> max_needed(pnodes.size(), -1);
-	for(int k = 0; k < open.size(); k++)
-	{
-		int k1 = open_indices[k].first;
-		int k2 = open_indices[k].second;
-		if(max_needed[k1] < k2) max_needed[k1] = k2;
-	}
-
-	// iteratively bridging open fragments
-	vector< vector<int> > table_cov;
-	vector<int32_t> table_len;
-	vector<int> trace;
-	table_cov.resize(pnodes.size());
-	table_len.resize(pnodes.size());
-	trace.resize(pnodes.size());
-
-	for(int i = 0; i < table_cov.size(); i++) table_cov[i].resize(dp_stack_size);
-
-	for(int k1 = 0; k1 < pnodes.size(); k1++)
-	{
-		/*
-		printf("RUN: k = %d, max_needed = %d, affected = (", k, max_needed[k]);
-		prints(affected[k]);
-		printf(")\n");
-		*/
-
-		if(max_needed[k1] < k1) continue;
-
-		dynamic_programming(k1, max_needed[k1], trace, table_cov, table_len);
-
-		for(set<int>::iterator si = affected[k1].begin(); si != affected[k1].end(); si++)
-		{
-			int i = *si;
-			fcluster &fc = open[i];
-
-			assert(open_indices[i].first == k1);
-			int k2 = open_indices[i].second;
-
-			double score = (double)(table_cov[k2][0]);
-			
-			//fc.print(i);
-			printf("#fragments = %lu, score = %.1lf, k1 = %d, k2 = %d, max[k1] = %d, p1 = ( ", fc.fset.size(), score, k1, k2, max_needed[k1]);
-			printv(pnodes[k1].v);
-			printf("), p2 = ( ");
-			printv(pnodes[k2].v);
-			printf(")\n");
-
-			// TODO, setup minimum score
-			if(score <= min_bridging_score) continue;
-
-			vector<int> pn = trace_back(k1, k2, trace);
-			vector<int> pb = get_bridge(pn, fc.v1, fc.v2);
-
-			printf("pn = ( ");
-			printv(pn);
-			printf("), pb = ( ");
-			printv(pb);
-			printf(")\n");
-
-			for(int j = 0; j < fc.fset.size(); j++)
-			{
-				fragment *fr = fc.fset[j];
-				path p;
-				p.ex1 = p.ex2 = 0;
-				p.v = pb;
-				p.length = bd->compute_aligned_length(fr->k1l, fr->k2r, p.v);
-				p.v = encode_vlist(p.v);
-				fr->paths.push_back(p);
-				printf(" fragment %d length = %d\n", j, p.length);
-			}
-		}
-	}
-
-	return 0;
-}
-
-int bridger::compare_stack(const vector<int> &x, const vector<int> &y)
-{
-	if(x.size() != y.size())
-	{
-		printf("|");
-		printv(x);
-		printf("|");
-		printv(y);
-		printf("|\n");
-	}
 	assert(x.size() == y.size());
 	for(int i = 0; i < x.size() - 1; i++) assert(x[i] <= x[i + 1]);
 	for(int i = 0; i < y.size() - 1; i++) assert(y[i] <= y[i + 1]);
@@ -826,9 +679,10 @@ int bridger::compare_stack(const vector<int> &x, const vector<int> &y)
 	return 0;
 }
 
-vector<int> bridger::update_stack(const vector<int> &v, int s)
+array5 bridger::update_stack(const array5 &v, int s)
 {
-	vector<int> stack(v.size(), 0);
+	array5 stack;
+	stack.fill(0);
 	for(int i = 0, j = 0; i < v.size() && j < v.size(); i++, j++)
 	{
 		if(i == j && v[i] > s)
@@ -836,7 +690,7 @@ vector<int> bridger::update_stack(const vector<int> &v, int s)
 			stack[j] = s;
 			j++;
 		}
-		stack[j] = v[i];
+		if(j < stack.size()) stack[j] = v[i];
 	}
 	return stack;
 }
@@ -851,7 +705,7 @@ int bridger::dynamic_programming(int k1, int k2, vector< vector<entry> > &table)
 	table.resize(n);
 
 	table[k1].resize(1);
-	table[k1][0].stack.assign(dp_stack_size, 999999);
+	table[k1][0].stack.fill(999999);
 	table[k1][0].length = bd->regions[k1].rpos - bd->regions[k1].lpos;
 	table[k1][0].trace1 = -1;
 	table[k1][0].trace2 = -1;
@@ -870,6 +724,7 @@ int bridger::dynamic_programming(int k1, int k2, vector< vector<entry> > &table)
 			for(int i = 0; i < table[j].size(); i++)
 			{
 				entry e;
+
 				e.stack = update_stack(table[j][i].stack, w);
 				e.length = table[j][i].length + len;
 				e.trace1 = j;
@@ -924,22 +779,22 @@ int bridger::evaluate_bridging_path(const vector<int> &pb)
 	return max_score;
 }
 
-int bridger::dynamic_programming(int k1, int k2, vector<int> &trace, vector< vector<int> > &table_cov, vector<int32_t> &table_len)
+int bridger::dynamic_programming(int k1, int k2, vector<int> &trace, vector<array5> &table_cov, vector<int32_t> &table_len)
 {
 	assert(k1 >= 0 && k1 < pnodes.size());
 	assert(k2 >= 0 && k2 < pnodes.size());
 
-	for(int k = 0; k < table_cov.size(); k++) table_cov[k].assign(dp_stack_size, -1);
+	for(int k = 0; k < table_cov.size(); k++) table_cov[k].fill(-1);
 	table_len.assign(table_len.size(), 888888);
 	trace.assign(pnodes.size(), -1);
 
-	table_cov[k1].assign(dp_stack_size, 999999);
+	table_cov[k1].fill(999999);
 	table_len[k1] = pnodes[k1].acc.back();
 	trace[k1] = -1;
 	for(int k = k1 + 1; k <= k2; k++)
 	{
-		vector<int> stack;
-		stack.assign(dp_stack_size, -1);
+		array5 stack;
+		stack.fill(-1);
 		int32_t blen = 888888;
 		int back = -1;
 		for(map<int, int>::reverse_iterator it = psety[k].rbegin(); it != psety[k].rend(); it++)
@@ -955,8 +810,7 @@ int bridger::dynamic_programming(int k1, int k2, vector<int> &trace, vector< vec
 			int s = (int)(pnodes[j].score);
 			if(s < stack[0] && table_cov[j][0] < stack[0]) continue;
 
-			vector<int> v = update_stack(table_cov[j], s);
-
+			array5 v = update_stack(table_cov[j], s);
 			int b = compare_stack(stack, v);
 
 			if(b == -1)

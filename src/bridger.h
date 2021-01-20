@@ -10,13 +10,15 @@ See LICENSE for licensing.
 #include "bundle2.h"
 #include "fcluster.h"
 #include <boost/functional/hash.hpp>
-
+#include <array>
 using namespace std;
+
+typedef array<int, 10> array5;
 
 class entry
 {
 public:
-	vector<int> stack;
+	array5 stack;
 	int32_t length;
 	int trace1;
 	int trace2;
@@ -69,9 +71,9 @@ public:
 
 	int build_overlap_index();
 	int bridge_tough_fragments();
-	int dynamic_programming(int k1, int k2, vector<int> &trace, vector< vector<int> > &table_cov, vector<int32_t> &table_len);
-	int compare_stack(const vector<int> &x, const vector<int> &y);
-	vector<int> update_stack(const vector<int> &v, int s);
+	int dynamic_programming(int k1, int k2, vector<int> &trace, vector<array5> &table_cov, vector<int32_t> &table_len);
+	int compare_stack(const array5 &x, const array5 &y);
+	array5 update_stack(const array5 &v, int s);
 
 	vector<int> trace_back(int k1, int k2, const vector<int> &trace);
 	vector<int> get_bridge(const vector<int> &vv, const vector<int> &v1, const vector<int> &v2);
