@@ -647,11 +647,14 @@ int bridger::bridge_hard_fragments()
 			}
 			*/
 
+			// TODO, don't filter
+			/*
 			if( !((be == 0) || (mul == 1 && votes[be] == fc.fset.size())) )
 			{
 				//printf("skip bridging\n");
 				continue;
 			}
+			*/
 
 			//if(voting_ratio <= 0.49) continue;
 			//if(best_ratio < 0.8 && be != best_path) continue;
