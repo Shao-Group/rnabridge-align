@@ -45,8 +45,8 @@ vector<double> insertsize_profile;
 // for bridging
 double min_bridging_score = 0.5;
 int max_num_path_nodes = 10000;
-int dp_solution_size = 20;
-int dp_stack_size = 10;
+int dp_solution_size = 5;
+int dp_stack_size = 5;
 bool use_overlap_scoring = false;
 bool use_supporting = false;
 int32_t max_clustering_flank = 30;

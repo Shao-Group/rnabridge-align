@@ -13,7 +13,7 @@ See LICENSE for licensing.
 #include <array>
 using namespace std;
 
-typedef array<int, 10> array5;
+typedef array<int, 5> array5;
 
 class entry
 {
