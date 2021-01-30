@@ -1,5 +1,5 @@
 /*
-Part of Coral package
+Part of rnabridge-align package
 (c) 2019 by Mingfu Shao, The Pennsylvania State University
 See LICENSE for licensing.
 */
