@@ -4,8 +4,8 @@ Part of Coral package
 See LICENSE for licensing.
 */
 
-#ifndef __CORAL_H__
-#define __CORAL_H__
+#ifndef __RNABRIDGE_H__
+#define __RNABRIDGE_H__
 
 #include <fstream>
 #include <htslib/sam.h>
@@ -15,11 +15,11 @@ See LICENSE for licensing.
 
 using namespace std;
 
-class coral
+class rnabridge
 {
 public:
-	coral();
-	~coral();
+	rnabridge();
+	~rnabridge();
 
 private:
 	samFile *sfn;

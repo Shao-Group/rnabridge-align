@@ -15,7 +15,7 @@ See LICENSE for licensing.
 
 #include "config.h"
 #include "previewer.h"
-#include "coral.h"
+#include "rnabridge.h"
 
 using namespace std;
 
@@ -46,7 +46,7 @@ int main(int argc, const char **argv)
 
 	if(preview_only == true) return 0;
 
-	coral cr;
+	rnabridge cr;
 	cr.resolve();
 
 	return 0;

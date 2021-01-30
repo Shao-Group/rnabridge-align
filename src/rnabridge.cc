@@ -8,13 +8,13 @@ See LICENSE for licensing.
 #include <cassert>
 #include <sstream>
 
-#include "coral.h"
+#include "rnabridge.h"
 #include "bundle2.h"
 #include "config.h"
 #include "reference.h"
 #include "htslib/bgzf.h"
 
-coral::coral()
+rnabridge::rnabridge()
 	: ref(ref_file)
 {
     sfn = sam_open(input_file.c_str(), "r");
@@ -31,7 +31,7 @@ coral::coral()
 	}
 }
 
-coral::~coral()
+rnabridge::~rnabridge()
 {
     bam_destroy1(b1t);
     bam_hdr_destroy(hdr);
@@ -39,7 +39,7 @@ coral::~coral()
 	if(output_bam_file != "") bgzf_close(bam_out);
 }
 
-int coral::resolve()
+int rnabridge::resolve()
 {
 	bb1.clear();
 	bb2.clear();
@@ -111,7 +111,7 @@ int coral::resolve()
 	return 0;
 }
 
-int coral::process()
+int rnabridge::process()
 {
 	for(int i = 0; i < pool.size(); i++)
 	{
@@ -144,7 +144,7 @@ int coral::process()
 	return 0;
 }
 
-int coral::write_unstrand()
+int rnabridge::write_unstrand()
 {
 	int n1 = 0;
 	int n2 = 0;
@@ -228,7 +228,7 @@ int coral::write_unstrand()
 	return 0;
 }
 
-int coral::write_multiple()
+int rnabridge::write_multiple()
 {
 	int n = 0;
 	for(int i = 0; i < uset.size(); i++)

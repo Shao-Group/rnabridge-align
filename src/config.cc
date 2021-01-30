@@ -82,7 +82,7 @@ int simulation_num_edges = 0;
 int simulation_max_edge_weight = 0;
 
 // input and output
-string algo = "coral";
+string algo = "rnabridge";
 string input_file;
 string ref_file;
 string ref_file1;
@@ -509,11 +509,11 @@ int print_command_line(int argc, const char ** argv)
 int print_help()
 {
 	printf("\n");
-	printf("Usage: coral -i <input-bam-file> -o <output-bam-file> [-r <refernece>] [options]\n");
+	printf("Usage: rnabridge-align -i <input-bam-file> -o <output-bam-file> [-r <refernece>] [options]\n");
 	printf("\n");
 	printf("Options:\n");
-	printf(" %-42s  %s\n", "--help",  "print usage of Coral and exit");
-	printf(" %-42s  %s\n", "--version",  "print current version of Coral and exit");
+	printf(" %-42s  %s\n", "--help",  "print usage of rnabridge-align and exit");
+	printf(" %-42s  %s\n", "--version",  "print current version of rnabridge-align and exit");
 	printf(" %-42s  %s\n", "--preview",  "determine fragment-length-range and library-type and exit");
 	printf(" %-42s  %s\n", "--library_type <first, second, unstranded>",  "library type of the sample, default: unstranded");
 	printf(" %-42s  %s\n", "--min_bridging_score <double>", "the minimized bottleneck weight in bridging path, default: 0.5");
@@ -529,6 +529,6 @@ int print_help()
 
 int print_copyright()
 {
-	printf("Coral %s (c) 2019 Mingfu Shao, The Pennsylvania State University\n", version.c_str());
+	printf("rnabridge-align %s (c) 2020 Mingfu Shao, The Pennsylvania State University\n", version.c_str());
 	return 0;
 }
