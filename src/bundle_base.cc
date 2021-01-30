@@ -48,7 +48,7 @@ int bundle_base::add_hit(const hit &ht)
 	}
 	*/
 
-	// TODO: do not add to interval-map (to reduce memory; for coral)
+	// TODO: do not add to interval-map (to reduce memory; for bridging)
 	/*
 	for(int k = 0; k < ht.itvm.size(); k++)
 	{

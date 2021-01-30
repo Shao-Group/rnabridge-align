@@ -128,7 +128,7 @@ hit::hit(bam1_t *b, int id)
 		spos.push_back(pack(s, p));
 	}
 
-	/* TODO; do not set up these for coral
+	/* TODO; do not set up these for bridging
 	itvm.clear();
 	itvi.clear();
 	itvd.clear();
