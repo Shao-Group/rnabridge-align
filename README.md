@@ -4,7 +4,7 @@
 rnabridge-align implements an efficient algorithm to bridge paire-end RNA-seq reads, i.e.,
 to determine the alignment of entire fragments given the alignment of two mate ends.
 Scripts that run the experiments to evaluate the effectness of rnabridge-align
-is available at [rnabridge-aligntest](https://github.com/Shao-Group/rnabridge-aligntest).
+is available at [rnabridge-test](https://github.com/Shao-Group/rnabridge-test).
 
 
 # Release
