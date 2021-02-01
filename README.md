@@ -4,11 +4,11 @@ to determine the alignment of entire fragments given the alignment of two mate e
 See [rnabridge-test](https://github.com/Shao-Group/rnabridge-test) for the evaluation of this tool.
 
 # Release
-Latest release of rnabridge-align is [v1.0.0](https://github.com/Shao-Group/rnabridge-align/releases/tag/v1.0.0).
+Latest release of rnabridge-align is [v1.0.1](https://github.com/Shao-Group/rnabridge-align/releases/tag/v1.0.1).
 
 # Installation
 Download the source code of rnabridge-align from
-[here](https://github.com/Shao-Group/rnabridge-align/releases/download/v1.0.0/rnabridge-align-1.0.0.tar.gz).
+[here](https://github.com/Shao-Group/rnabridge-align/releases/download/v1.0.1/rnabridge-align-1.0.1.tar.gz).
 rnabridge-align uses additional libraries of Boost and htslib. 
 If they have not been installed in your system, you first
 need to download and install them. You might also need to
