@@ -1,3 +1,6 @@
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/rnabridge-align/badges/installer/conda.svg)](https://conda.anaconda.org/bioconda)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/rnabridge-align/badges/downloads.svg)](https://anaconda.org/bioconda/rnabridge-align)
+
 # Overview
 rnabridge-align implements an efficient algorithm to bridge paire-end RNA-seq reads, i.e.,
 to determine the alignment of full fragments given the alignment of two mate ends.
