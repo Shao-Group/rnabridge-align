@@ -1,4 +1,4 @@
-[![Anaconda-Server Badge](https://anaconda.org/bioconda/rnabridge-align/badges/installer/conda.svg)](https://conda.anaconda.org/bioconda)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/rnabridge-align/badges/installer/conda.svg)](https://anaconda.org/bioconda/rnabridge-align)
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/rnabridge-align/badges/downloads.svg)](https://anaconda.org/bioconda/rnabridge-align)
 
 # Overview
